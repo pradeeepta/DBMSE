@@ -10,20 +10,19 @@ CREATE TABLE Users (
 );
 
 -- Create Students table
-CREATE TABLE Students (
-    StudentID INT AUTO_INCREMENT PRIMARY KEY,
-    FirstName VARCHAR(50) NOT NULL,
-    LastName VARCHAR(50) NOT NULL,
-    Email VARCHAR(100) NOT NULL UNIQUE,
-    Age INT NOT NULL,
-    PhoneNumber VARCHAR(15) NOT NULL,
-    Marks10th FLOAT NOT NULL,
-    Marks12th FLOAT NOT NULL,
-    `Rank` INT,
-    Status ENUM('pending', 'approved', 'denied') DEFAULT 'pending',
-    UserID INT,
-    FOREIGN KEY (UserID) REFERENCES Users(UserID) ON DELETE CASCADE
-);
+mysql> CREATE TABLE Students (
+    ->     StudentID INT AUTO_INCREMENT PRIMARY KEY,
+    ->     FirstName VARCHAR(50) NOT NULL,
+    ->     LastName VARCHAR(50) NOT NULL,
+    ->     Email VARCHAR(100) NOT NULL,
+    ->     Age INT,
+    ->     PhoneNumber VARCHAR(15),
+    ->     Marks10th FLOAT,
+    ->     Marks12th FLOAT,
+    ->     UserID INT,
+    ->     Status ENUM('approved', 'pending', 'denied') DEFAULT 'pending',
+    ->     FOREIGN KEY (UserID) REFERENCES Users(UserID)
+    -> );
 
 -- Insert a new user
 INSERT INTO Users (Username, Password, UserType) VALUES ('student1', 'student_password', 'student');
