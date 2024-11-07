@@ -119,3 +119,59 @@ SELECT * FROM Users WHERE Username = 'student_username' AND Password = 'student_
 
 mysql> INSERT INTO Users (Username, Password, UserType) VALUES ('pes1ug23cs819', '9036016116', 'admin');
 Query OK, 1 row affected (0.11 sec)
+
+
+mysql> USE admission_systemmm;
+Database changed
+mysql> ALTER TABLE Students
+    -> ADD COLUMN ProfileImagePath VARCHAR(255),
+    -> ADD COLUMN DepartmentID INT,
+    -> ADD CONSTRAINT fk_department FOREIGN KEY (DepartmentID) REFERENCES Departments(DepartmentID);
+ERROR 1824 (HY000): Failed to open the referenced table 'departments'
+mysql> CREATE TABLE IF NOT EXISTS Departments (
+    ->     DepartmentID INT AUTO_INCREMENT PRIMARY KEY,
+    ->     DepartmentName VARCHAR(100) NOT NULL UNIQUE
+    -> );
+Query OK, 0 rows affected (0.15 sec)
+
+mysql> ALTER TABLE Students
+    -> ADD COLUMN ProfileImagePath VARCHAR(255),
+    -> ADD COLUMN DepartmentID INT,
+    -> ADD CONSTRAINT fk_department FOREIGN KEY (DepartmentID) REFERENCES Departments(DepartmentID);
+Query OK, 0 rows affected (0.26 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> CREATE TABLE Departments (
+    ->     DepartmentID INT AUTO_INCREMENT PRIMARY KEY,
+    ->     DepartmentName VARCHAR(100) NOT NULL UNIQUE
+    -> );
+ERROR 1050 (42S01): Table 'departments' already exists
+mysql> CREATE TABLE Courses (
+    ->     CourseID INT AUTO_INCREMENT PRIMARY KEY,
+    ->     CourseName VARCHAR(100) NOT NULL UNIQUE,
+    ->     DepartmentID INT,
+    ->     FOREIGN KEY (DepartmentID) REFERENCES Departments(DepartmentID)
+    -> );
+Query OK, 0 rows affected (0.27 sec)
+
+mysql> CREATE TABLE StudentCourses (
+    ->     StudentID INT,
+    ->     CourseID INT,
+    ->     FOREIGN KEY (StudentID) REFERENCES Students(StudentID) ON DELETE CASCADE,
+    ->     FOREIGN KEY (CourseID) REFERENCES Courses(CourseID) ON DELETE CASCADE
+    -> );
+Query OK, 0 rows affected (0.15 sec)
+
+mysql> INSERT INTO Departments (DepartmentName) VALUES ('Computer Science'), ('Mechanical Engineering'), ('Electrical Engineering'), ('Civil Engineering');
+Query OK, 4 rows affected (0.10 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO Courses (CourseName, DepartmentID) VALUES ('Data Structures', 1), ('Algorithms', 1), ('Computer Networks', 1);
+Query OK, 3 rows affected (0.10 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO Courses (CourseName, DepartmentID) VALUES ('Thermodynamics', 2), ('Fluid Mechanics', 2);
+Query OK, 2 rows affected (0.10 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql>
